@@ -58,6 +58,7 @@ def process_emotions(image_folder, excel_file_path):
 
     wb = openpyxl.Workbook()
     ws = wb.active
+    contador = 1
 
     for emotion in df.columns:
         plt.figure(figsize=(8, 4))
@@ -69,7 +70,8 @@ def process_emotions(image_folder, excel_file_path):
         img_buffer = BytesIO()
         plt.savefig(img_buffer, format='png')
         img = Image(img_buffer)
-        ws.add_image(img, 'A10')
+        ws.add_image(img, 'A' + str(contador))
+        contador += 22
 
     nombres_columna = ['Imagen ' + str(i + 1) for i in range(len(image_files))]
 
