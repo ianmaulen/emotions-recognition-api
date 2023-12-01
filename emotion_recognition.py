@@ -54,41 +54,43 @@ def process_emotions(image_folder, excel_file_path):
                     confidence = emotion['Confidence']
                     emotion_results[emotion_type].append(confidence)
 
-    df = pd.DataFrame(emotion_results, index=[f'Imagen {i+1}' for i in range(len(image_files))])
+    return emotion_results
+# EXPORTACIÓN A EXCEL CON GRAFICOS
+    # df = pd.DataFrame(emotion_results, index=[f'Imagen {i+1}' for i in range(len(image_files))])
 
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    contador = 1
+    # wb = openpyxl.Workbook()
+    # ws = wb.active
+    # contador = 1
 
-    for emotion in df.columns:
-        plt.figure(figsize=(8, 4))
-        plt.plot(range(1, len(image_files) + 1), df[emotion], label=emotion)
-        plt.xlabel('Imágenes')
-        plt.ylabel('Confidencia')
-        plt.legend(loc='best')
-        plt.title(f'Confidencia de {emotion} por Imagen')
-        img_buffer = BytesIO()
-        plt.savefig(img_buffer, format='png')
-        img = Image(img_buffer)
-        ws.add_image(img, 'A' + str(contador))
-        contador += 22
+    # for emotion in df.columns:
+    #     plt.figure(figsize=(8, 4))
+    #     plt.plot(range(1, len(image_files) + 1), df[emotion], label=emotion)
+    #     plt.xlabel('Imágenes')
+    #     plt.ylabel('Confidencia')
+    #     plt.legend(loc='best')
+    #     plt.title(f'Confidencia de {emotion} por Imagen')
+    #     img_buffer = BytesIO()
+    #     plt.savefig(img_buffer, format='png')
+    #     img = Image(img_buffer)
+    #     ws.add_image(img, 'A' + str(contador))
+    #     contador += 22
 
-    nombres_columna = ['Imagen ' + str(i + 1) for i in range(len(image_files))]
+    # nombres_columna = ['Imagen ' + str(i + 1) for i in range(len(image_files))]
 
-    ws_tabla = wb.create_sheet("Tabla de Emociones")
+    # ws_tabla = wb.create_sheet("Tabla de Emociones")
 
-    datos_tabla = []
-    emociones = df.columns
+    # datos_tabla = []
+    # emociones = df.columns
 
-    datos_tabla.append([''] + nombres_columna)
+    # datos_tabla.append([''] + nombres_columna)
 
-    for emocion in emociones:
-        fila = [emocion]
-        fila.extend(df[emocion])
-        datos_tabla.append(fila)
+    # for emocion in emociones:
+    #     fila = [emocion]
+    #     fila.extend(df[emocion])
+    #     datos_tabla.append(fila)
 
-    for fila in datos_tabla:
-        ws_tabla.append(fila)
+    # for fila in datos_tabla:
+    #     ws_tabla.append(fila)
 
-    wb.save(excel_file_path)
-    print(f"Resultados guardados en {excel_file_path}")
+    # wb.save(excel_file_path)
+    # print(f"Resultados guardados en {excel_file_path}")
