@@ -4,6 +4,8 @@ import json
 from flask import Flask, request, send_file, jsonify
 from video_fotograms import extract_frames
 from emotion_recognition import process_emotions
+from clusters import process_clusters
+
 import os
 
 app = Flask(__name__)
@@ -21,8 +23,11 @@ def procesar_video():
 
         excel_file_path = os.path.join('uploads', f'{video_name}_resultados_emociones.xlsx')
         emotion_results_json = process_emotions(output_folder, excel_file_path)
-
-        return jsonify({'status': 'success', 'emotion_results': emotion_results_json}), 200
+        clusters = process_clusters(emotion_results_json)
+        return jsonify({'status': 'success', 
+                        'emotion_results': emotion_results_json,
+                        'clusters': clusters  
+                        }), 200
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
