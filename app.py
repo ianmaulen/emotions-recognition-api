@@ -4,7 +4,9 @@ import json
 from flask import Flask, request, send_file, jsonify
 from video_fotograms import extract_frames
 from emotion_recognition import process_emotions
-from clusters import process_clusters
+from clusters2 import process_clusters
+# importacion a clusters es el primer modelo creado por José (8 condicionales) y queda inactiva
+# from clusters import process_clusters
 
 import os
 
