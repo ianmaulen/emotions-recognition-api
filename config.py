@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
+# conexión a la base de datos
 db = pymysql.connect(host=os.environ.get('DATABASE_HOST'), user=os.environ.get('DATABASE_USERNAME'), passwd=os.environ.get('DATABASE_PASSWORD'), db=os.environ.get('DATABASE_NAME'))
 
 def getClusterParams():
@@ -25,5 +25,5 @@ def getClusterParams():
     for row in rows:
         row_dict = dict(zip(column_names, row))
         results.append(row_dict)
-
+    print(f'Se han obtenido los parámetros desde la BD')
     return results

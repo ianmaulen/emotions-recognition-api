@@ -47,6 +47,7 @@ def process_clusters(emotion_results_json):
     # RACIONAL: 1 sólo si "calm" tiene 10 o más valores sobre 80% y "sad" tiene 3 o más valores sobre 50%. Si no se cumple esta condición, entonces "estructurado"=0.
     clusters['racional'] = 1 if (len([value for value in emotion_results_json.get('CALM', []) if value > calmLimitRacional]) >= calmPeaksRacional) and (len([value for value in emotion_results_json.get('SAD', []) if value > sadLimitRacional]) >= sadPeaksRacional) else 0
 
+    print(f'Se han obtenido los clusters de personalidad')
     return clusters
 
 # funcion para encontrar los limites

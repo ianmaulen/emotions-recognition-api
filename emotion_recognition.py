@@ -53,7 +53,7 @@ def process_emotions(image_folder, excel_file_path):
                     emotion_type = emotion['Type']
                     confidence = emotion['Confidence']
                     emotion_results[emotion_type].append(confidence)
-
+    print(f'Se han obtenido las emociones de las 30 imagenes con éxito')
     return emotion_results
 # EXPORTACIÓN A EXCEL CON GRAFICOS
     # df = pd.DataFrame(emotion_results, index=[f'Imagen {i+1}' for i in range(len(image_files))])
