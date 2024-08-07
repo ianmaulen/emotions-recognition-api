@@ -10,7 +10,7 @@ db = pymysql.connect(host=os.environ.get('DATABASE_HOST'), user=os.environ.get('
 def getClusterParams():
     cursor = db.cursor()
     sql = """
-    SELECT e.emotion_name, c.cluster_name, cp.limit, cp.peaks
+    SELECT e.emotion_name, c.cluster_name, cp.limits, cp.peaks, cp.levels, cp.restriction
     FROM cluster_params cp
     JOIN emotions e ON cp.emotion = e.id
     JOIN clusters c ON cp.cluster = c.id;
