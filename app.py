@@ -5,7 +5,8 @@ from flask import Flask, request, send_file, jsonify
 from video_fotograms import extract_frames
 from emotion_recognition import process_emotions
 from clusters3 import process_clusters
-from config import getClusterParams
+from config import getClusterParams, getOutputText
+import traceback
 # importacion a clusters es el primer modelo creado por José (8 condicionales) y queda inactiva
 # from clusters import process_clusters
 
@@ -28,11 +29,14 @@ def procesar_video():
         emotion_results_json = process_emotions(output_folder, excel_file_path)
         db_params = getClusterParams()
         clusters = process_clusters(emotion_results_json, db_params)
+        output = getOutputText(clusters)
         return jsonify({'status': 'success', 
                         'emotion_results': emotion_results_json,
-                        'clusters': clusters  
+                        'clusters': clusters,
+                        'output': output  
                         }), 200
     except Exception as e:
+        print(traceback.format_exc()) 
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 if __name__ == '__main__':
