@@ -24,8 +24,8 @@ def determine_extrovertido(emotion_values, cluster_params):
     happy_alto_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'HAPPY' and param['level'] == 'alto')
     happy_medio_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'HAPPY' and param['level'] == 'medio')
 
-    happy_alto_count = len([value for value in emotion_values['HAPPY'] if value > happy_alto_value_limit])
-    happy_medio_count = len([value for value in emotion_values['HAPPY'] if value > happy_medio_value_limit])
+    happy_alto_count = len([value for value in emotion_values['HAPPY'] if value >= happy_alto_value_limit])
+    happy_medio_count = len([value for value in emotion_values['HAPPY'] if value >= happy_medio_value_limit])
 
     if happy_alto_count >= happy_alto_peaks:
         print('extrovertido alto')
@@ -48,10 +48,10 @@ def determine_determinado(emotion_values, cluster_params):
     angry_alto_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'ANGRY' and param['level'] == 'alto')
     angry_medio_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'ANGRY' and param['level'] == 'medio')
 
-    confused_alto_count = len([value for value in emotion_values['CONFUSED'] if value > confused_alto_value_limit])
-    confused_medio_count = len([value for value in emotion_values['CONFUSED'] if value > confused_medio_value_limit])
-    angry_alto_count = len([value for value in emotion_values['ANGRY'] if value > angry_alto_value_limit])
-    angry_medio_count = len([value for value in emotion_values['ANGRY'] if value > angry_medio_value_limit])
+    confused_alto_count = len([value for value in emotion_values['CONFUSED'] if value >= confused_alto_value_limit])
+    confused_medio_count = len([value for value in emotion_values['CONFUSED'] if value >= confused_medio_value_limit])
+    angry_alto_count = len([value for value in emotion_values['ANGRY'] if value >= angry_alto_value_limit])
+    angry_medio_count = len([value for value in emotion_values['ANGRY'] if value >= angry_medio_value_limit])
     
     if confused_alto_count <= confused_alto_peaks and angry_alto_count >= angry_alto_peaks:
         return 'alto'
@@ -71,10 +71,10 @@ def determine_estructurado(emotion_values, cluster_params):
     calm_medio_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'CALM' and param['level'] == 'medio')
     sad_medio_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'SAD' and param['level'] == 'medio')
 
-    calm_alto_count = len([value for value in emotion_values['CALM'] if value > calm_alto_value_limit])
-    calm_medio_count = len([value for value in emotion_values['CALM'] if value > calm_medio_value_limit])
-    sad_alto_count = len([value for value in emotion_values['SAD'] if value > sad_alto_value_limit])
-    sad_medio_count = len([value for value in emotion_values['SAD'] if value > sad_medio_value_limit])
+    calm_alto_count = len([value for value in emotion_values['CALM'] if value >= calm_alto_value_limit])
+    calm_medio_count = len([value for value in emotion_values['CALM'] if value >= calm_medio_value_limit])
+    sad_alto_count = len([value for value in emotion_values['SAD'] if value >= sad_alto_value_limit])
+    sad_medio_count = len([value for value in emotion_values['SAD'] if value >= sad_medio_value_limit])
     
     if calm_alto_count >= calm_alto_peaks and sad_alto_count >= sad_alto_peaks:
         return 'alto'
@@ -90,8 +90,8 @@ def determine_creativo(emotion_values, cluster_params):
     surprised_alto_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'SURPRISED' and param['level'] == 'alto')
     surprised_medio_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'SURPRISED' and param['level'] == 'medio')
 
-    surprised_alto_count = len([value for value in emotion_values['SURPRISED'] if value > surprised_alto_value_limit])
-    surprised_medio_count = len([value for value in emotion_values['SURPRISED'] if value > surprised_medio_value_limit])
+    surprised_alto_count = len([value for value in emotion_values['SURPRISED'] if value >= surprised_alto_value_limit])
+    surprised_medio_count = len([value for value in emotion_values['SURPRISED'] if value >= surprised_medio_value_limit])
     
     if surprised_alto_count >= surprised_alto_peaks:
         return 'alto'
@@ -111,10 +111,10 @@ def determine_racional(emotion_values, cluster_params):
     sad_alto_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'SAD' and param['level'] == 'alto')
     sad_medio_value_limit = next(param['value_limit'] for param in cluster_params if param['emotion_name'] == 'SAD' and param['level'] == 'medio')
 
-    calm_alto_count = len([value for value in emotion_values['CALM'] if value > calm_alto_value_limit])
-    calm_medio_count = len([value for value in emotion_values['CALM'] if value > calm_medio_value_limit])
-    sad_alto_count = len([value for value in emotion_values['SAD'] if value > sad_alto_value_limit])
-    sad_medio_count = len([value for value in emotion_values['SAD'] if value > sad_medio_value_limit])
+    calm_alto_count = len([value for value in emotion_values['CALM'] if value >= calm_alto_value_limit])
+    calm_medio_count = len([value for value in emotion_values['CALM'] if value >= calm_medio_value_limit])
+    sad_alto_count = len([value for value in emotion_values['SAD'] if value >= sad_alto_value_limit])
+    sad_medio_count = len([value for value in emotion_values['SAD'] if value >= sad_medio_value_limit])
     
     if calm_alto_count >= calm_alto_peaks and sad_alto_count >= sad_alto_peaks:
         return 'alto'
