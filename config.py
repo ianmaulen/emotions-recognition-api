@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+from openai import OpenAI
 import pymysql
 import os
 import random
@@ -32,9 +33,10 @@ def getClusterParams():
     return results
 
 ## obtiene un texto de manera aleatoria para formar un output
-def getOutputText(cluster_levels):
+def getOutputText(cluster_levels, instruction):
     texts = {}
     cursor = db.cursor()
+    output_raw = ""
 
     for cluster_name, level in cluster_levels.items():
         cursor.execute("""
@@ -45,7 +47,21 @@ def getOutputText(cluster_levels):
         results = cursor.fetchall()
         if results:
             random_text = random.choice(results)
-            texts[cluster_name] = random_text[0] 
+            texts[cluster_name] = random_text[0]
+            output_raw += texts[cluster_name] + "\n"
 
     cursor.close()
-    return texts
+    transofmedText = transformTextAI(texts['extrovertido'], instruction)
+    #return output_raw
+    return transofmedText
+
+def transformTextAI(text, instruction):
+    client = OpenAI()
+    completion = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": f"{instruction}: {text}"}
+        ]
+    )
+    print(completion.choices[0].message.content)
+    return completion.choices[0].message.content
