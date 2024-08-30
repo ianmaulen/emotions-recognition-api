@@ -51,7 +51,7 @@ def getOutputText(cluster_levels, instruction):
             output_raw += texts[cluster_name] + "\n"
 
     cursor.close()
-    transofmedText = transformTextAI(texts['extrovertido'], instruction)
+    transofmedText = transformTextAI(output_raw, instruction)
     #return output_raw
     return transofmedText
 
