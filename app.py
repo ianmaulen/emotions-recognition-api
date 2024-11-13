@@ -4,8 +4,8 @@ import json
 from flask import Flask, request, send_file, jsonify
 from video_fotograms import extract_frames
 from emotion_recognition import process_emotions
-from clusters3 import process_clusters
-from config import getClusterParams, getOutputText, transformTextAI
+from clusters4 import process_clusters
+from config import getClusterParams, getOutputText, transformTextAI, getClusterOperations
 import traceback
 from openai import OpenAI
 # importacion a clusters es el primer modelo creado por José (8 condicionales) y queda inactiva
@@ -27,14 +27,13 @@ def procesar_video():
         output_folder = os.path.join('uploads', f'{video_name}_frames')
         extract_frames(video_path, output_folder)
 
-        excel_file_path = os.path.join('uploads', f'{video_name}_resultados_emociones.xlsx')
-        emotion_results_json = process_emotions(output_folder, excel_file_path)
-        db_params = getClusterParams()
-        clusters = process_clusters(emotion_results_json, db_params)
+        emotion_results, emotion_points = process_emotions(output_folder)
+        db_operations = getClusterOperations()
+        clusters = process_clusters(emotion_points, db_operations)
         output = getOutputText(clusters, instruction)
         return jsonify({'status': 'success', 
-                        'emotion_results': emotion_results_json,
-                        'clusters': clusters,
+                        'emotion_results': emotion_results,
+                        'clusters_operations': clusters,
                         'output': output  
                         }), 200
     except Exception as e:
@@ -53,7 +52,6 @@ def procesar_texto():
     except Exception as e:
         print(traceback.format_exc()) 
         return jsonify({'status': 'error', 'message': str(e)}), 500
-
 
 if __name__ == '__main__':
     os.makedirs('uploads', exist_ok=True)

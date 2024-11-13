@@ -19,7 +19,7 @@ def extract_image_number(filename):
         return int(match.group(1))
     return 0
 
-def process_emotions(image_folder, excel_file_path):
+def process_emotions(image_folder):
     aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
     aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
     region_name = os.environ.get('AWS_REGION')
@@ -40,6 +40,17 @@ def process_emotions(image_folder, excel_file_path):
         'DISGUSTED': [],
     }
 
+    emotion_points = {
+        'CALM': [],
+        'CONFUSED': [],
+        'SURPRISED': [],
+        'FEAR': [],
+        'SAD': [],
+        'ANGRY': [],
+        'HAPPY': [],
+        'DISGUSTED': [],
+    }
+
     for image_file in image_files:
         with open(image_file, 'rb') as image_data:
             response = rekognition_client.detect_faces(
@@ -47,14 +58,26 @@ def process_emotions(image_folder, excel_file_path):
                 Attributes=['ALL']
             )
 
-        if 'FaceDetails' in response:
-            for face_detail in response['FaceDetails']:
-                for emotion in face_detail['Emotions']:
-                    emotion_type = emotion['Type']
-                    confidence = emotion['Confidence']
-                    emotion_results[emotion_type].append(confidence)
+        if 'FaceDetails' in response and response['FaceDetails']:
+            # Solo procesar la cara más prominente (la primera en la lista)
+            face_detail = response['FaceDetails'][0]
+            for emotion in face_detail['Emotions']:
+                emotion_type = emotion['Type']
+                confidence = emotion['Confidence']
+                emotion_results[emotion_type].append(confidence)
+
+                # Asignar puntajes según el nivel de confianza
+                if confidence < 25:
+                    emotion_points[emotion_type].append(0)
+                elif confidence < 50:
+                    emotion_points[emotion_type].append(1)
+                elif confidence < 75:
+                    emotion_points[emotion_type].append(2)
+                else:
+                    emotion_points[emotion_type].append(3)
+
     print(f'Se han obtenido las emociones de las 30 imagenes con éxito')
-    return emotion_results
+    return emotion_results, emotion_points
 # EXPORTACIÓN A EXCEL CON GRAFICOS
     # df = pd.DataFrame(emotion_results, index=[f'Imagen {i+1}' for i in range(len(image_files))])
 

@@ -38,11 +38,11 @@ def getOutputText(cluster_levels, instruction):
     cursor = db.cursor()
     output_raw = ""
 
-    for cluster_name, level in cluster_levels.items():
+    for cluster_name, data in cluster_levels.items():
         cursor.execute("""
             SELECT text FROM cluster_texts 
-            WHERE cluster_name = %s AND level = %s AND status = 1
-            """, (cluster_name, level))
+            WHERE ludwika_name = %s AND level = %s AND status = 1
+            """, (cluster_name, data['level']))
         
         results = cursor.fetchall()
         if results:
@@ -56,12 +56,22 @@ def getOutputText(cluster_levels, instruction):
     return transofmedText
 
 def transformTextAI(text, instruction):
-    client = OpenAI()
+    client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
     completion = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         messages=[
             {"role": "user", "content": f"{instruction}: {text}"}
         ]
     )
     print(completion.choices[0].message.content)
     return completion.choices[0].message.content
+
+def getClusterOperations():
+    cursor = db.cursor()
+    cursor.execute("SELECT nombre, operacion, alto, bajo FROM cluster_operations")
+    
+    results = {nombre: {'operacion': operacion, 'alto': alto, 'bajo': bajo} for (nombre, operacion, alto, bajo) in cursor.fetchall()}
+    
+    cursor.close()
+    print(f'Se han obtenido los parámetros desde la BD')
+    return results
